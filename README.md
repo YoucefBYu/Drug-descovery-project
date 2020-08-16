@@ -8,7 +8,7 @@ in this cell we collect all the required package installation in our project, It
 !pip install scikit-learn
 
 #installing scikit-multilearn
-
+'''
 !pip install scikit-multilearn
 
 
@@ -43,7 +43,7 @@ import sys
 import os
 sys.path.append('/usr/local/lib/python3.7/site-packages')
 
-
+```
 ##1.1. Import Packages, Libraries and Frameworks 
 
 
@@ -126,6 +126,7 @@ downloaded4.GetContentFile("tox21_10k_challenge_test")
 
 The original file of tox21 is an sdf file contains a table of 17 columns and  12K lines.
 
+```
 
 ###Process used for Tox21 Data preparation an preprocessing
 in data preparation phase we follow many rules to prepare the data, they are necessary before start building the model, there are many process but in our case we will use just some of them:
@@ -144,7 +145,7 @@ in data preparation phase we follow many rules to prepare the data, they are nec
    
         in fact, Tox21 data has been splited before by the challenge organizers to evalute the results of participants, but we can resplit it randomly to look for deferent results.
 
-
+```
 #extarct file to directory 
 
 import zipfile
@@ -160,7 +161,7 @@ zip_ref = zipfile.ZipFile("../content/tox21_10k_data_all.sdf.zip", 'r')
 zip_ref.extractall("../content/")
 zip_ref.close()
 
-
+```
 ## 2.1. Loading the data from the SDF file 
 
 We use Pandas tools from rdkit library to load the data of sdf format to a Pandas Dataframe object.''
