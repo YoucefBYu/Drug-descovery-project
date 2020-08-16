@@ -3,7 +3,7 @@
 # 1.Package installation in Google CO Lab envirment
 
 in this cell we collect all the required package installation in our project, It is like batsh installation in linux envirment, almost all of the packages are installed using " pip ", some others use " conda "  or imported from GitHub.
-
+```python
 #Installing scikit learn
 !pip install scikit-learn
 
@@ -42,11 +42,11 @@ import matplotlib.pyplot as plt
 import sys
 import os
 sys.path.append('/usr/local/lib/python3.7/site-packages')
-
 ```
+
 ##1.1. Import Packages, Libraries and Frameworks 
 
-
+```
 import numpy as np
 import tensorflow as tf 
 import sklearn as sk
@@ -70,11 +70,11 @@ import warnings
 config = tf.ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.3
 tf.keras.backend.set_session(tf.Session(config=config))
-
+```
 ##1.2. Install the PyDrive wrapper & import libraries.
 we use pyDrive to import data or files from google drive in colab envirment.
 
-
+```
 # Install the PyDrive wrapper & import libraries.
 # This only needs to be done once per notebook.
 !pip install -U -q PyDrive
@@ -119,14 +119,14 @@ downloaded3.GetContentFile("tox21_10k_data_all")
 downloaded4.GetContentFile("tox21_10k_challenge_test")
 
 #print('Downloaded content "{}"'.format(downloaded.GetContentString()))
-
+```
 # 2.Data Preprocessing 
 
 ##Import orginal tox21 data 
 
 The original file of tox21 is an sdf file contains a table of 17 columns and  12K lines.
 
-```
+
 
 ###Process used for Tox21 Data preparation an preprocessing
 in data preparation phase we follow many rules to prepare the data, they are necessary before start building the model, there are many process but in our case we will use just some of them:
@@ -165,7 +165,7 @@ zip_ref.close()
 ## 2.1. Loading the data from the SDF file 
 
 We use Pandas tools from rdkit library to load the data of sdf format to a Pandas Dataframe object.''
-
+```
 from rdkit.Chem import PandasTools
 
 #LOAD THE training DATA FROM SDF FILE 
@@ -177,9 +177,9 @@ tox21_10k_challenge_test=PandasTools.LoadSDF(path2)
 
 #Displaing the first four lines of the Data 
 tox21_10k_challenge.head()
-
+```
 ## 2.2. Exporting the data to Excel file 
-
+```
 
 print(tox21_10k_challenge.columns)
 tox21_10k_challenge.to_excel('Tox21_10k_data_all.xlsx',columns= ('DSSTox_CID', 'FW', 
@@ -191,11 +191,11 @@ tox21_10k_challenge_test.to_excel('Tox21_10k_challenge_test.xlsx',columns= ('DSS
 'Formula', 'ID', 'NR-AR', 'NR-AR-LBD', 'NR-AhR', 'NR-Aromatase', 'NR-ER', 
 'NR-ER-LBD', 'NR-PPAR-gamma', 'SR-ARE', 'SR-ATAD5', 'SR-HSE', 'SR-MMP', 
 'SR-p53'))
-
+```
 ## 2.3. Loading the exported execl file to prepare the data 
 
 We put the data in a pandas dataframe after that we delete the columns that will not be used in the computing process, we keep only the columns of the 12 tasks wich represent the labels of this dataset. this labels will be used in the predictive model.
-
+```python
 
 
 #loading Execl data of tox21 Train and test sets into Pandas data frame
