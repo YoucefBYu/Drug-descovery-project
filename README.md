@@ -287,7 +287,7 @@ tox21_desc_test_T = np.array(tox21_desc_test.values, dtype=np.float64)
 The data has been scalled using  Scikit learn ***StandarScalar*** function to standardize features by removing the mean and scaling to unit variance
 
 The standard score of a sample x is calculated as:
-$  z = (x - u) / s
+ $  z = (x - u) / s $
 where u is the mean of the training samples or zero if with_mean=False, and s is the standard deviation of the training samples or one if with_std=False.
 
 see: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
