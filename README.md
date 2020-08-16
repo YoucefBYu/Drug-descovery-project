@@ -1,6 +1,6 @@
-# Drug-descovery-project
+# Tox21 dataset challenge
 
-# 1.Package installation in Google CO Lab envirment
+## 1.Package installation in Google CO Lab envirment
 
 in this cell we collect all the required package installation in our project, It is like batsh installation in linux envirment, almost all of the packages are installed using " pip ", some others use " conda "  or imported from GitHub.
 ```python
@@ -44,7 +44,7 @@ import os
 sys.path.append('/usr/local/lib/python3.7/site-packages')
 ```
 
-## 1.1. Import Packages, Libraries and Frameworks 
+### 1.1. Import Packages, Libraries and Frameworks 
 
 ```python
 import numpy as np
@@ -71,7 +71,7 @@ config = tf.ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.3
 tf.keras.backend.set_session(tf.Session(config=config))
 ```
-## 1.2. Install the PyDrive wrapper & import libraries.
+### 1.2. Install the PyDrive wrapper & import libraries.
 we use pyDrive to import data or files from google drive in colab envirment.
 
 ```python
@@ -120,15 +120,13 @@ downloaded4.GetContentFile("tox21_10k_challenge_test")
 
 #print('Downloaded content "{}"'.format(downloaded.GetContentString()))
 ```
-# 2.Data Preprocessing 
+## 2.Data Preprocessing 
 
-## Import orginal tox21 data 
+### Import orginal tox21 data 
 
 The original file of tox21 is an sdf file contains a table of 17 columns and  12K lines.
 
-
-
-### Process used for Tox21 Data preparation an preprocessing
+#### Process used for Tox21 Data preparation an preprocessing
 in data preparation phase we follow many rules to prepare the data, they are necessary before start building the model, there are many process but in our case we will use just some of them:
    -  Convert the data from raw data to numeric.
    -  clean the data 
@@ -156,7 +154,7 @@ zip_ref.close()
 
 ```
 
-## 2.1. Loading the data from the SDF file 
+### 2.1. Loading the data from the SDF file 
 
 We use Pandas tools from rdkit library to load the data of sdf format to a Pandas Dataframe object.''
 ```python
@@ -172,7 +170,7 @@ tox21_10k_challenge_test=PandasTools.LoadSDF(path2)
 #Displaing the first four lines of the Data 
 tox21_10k_challenge.head()
 ```
-## 2.2. Exporting the data to Excel file 
+### 2.2. Exporting the data to Excel file 
 ```python
 print(tox21_10k_challenge.columns)
 tox21_10k_challenge.to_excel('Tox21_10k_data_all.xlsx',columns= ('DSSTox_CID', 'FW', 
@@ -185,12 +183,10 @@ tox21_10k_challenge_test.to_excel('Tox21_10k_challenge_test.xlsx',columns= ('DSS
 'NR-ER-LBD', 'NR-PPAR-gamma', 'SR-ARE', 'SR-ATAD5', 'SR-HSE', 'SR-MMP', 
 'SR-p53'))
 ```
-## 2.3. Loading the exported execl file to prepare the data 
+### 2.3. Loading the exported execl file to prepare the data 
 
 We put the data in a pandas dataframe after that we delete the columns that will not be used in the computing process, we keep only the columns of the 12 tasks wich represent the labels of this dataset. this labels will be used in the predictive model.
 ```python
-
-
 #loading Execl data of tox21 Train and test sets into Pandas data frame
 
 tox21_10k_train=pd.read_excel('../content/Tox21_10k_data_all.xlsx')
@@ -210,7 +206,7 @@ tox21_10k_train=tox21_10k_train.fillna(0)
 tox21_10k_test=tox21_10k_test.fillna(0)
 tox21_10k_train.head
 ```
-## 2.4. Loadoing the calculated descriptors data and prepare it for the processing phase.
+### 2.4. Loadoing the calculated descriptors data and prepare it for the processing phase.
 
 The descriptors data represents the examples ( set of features X ) that will be used in the predictive model 
 ```python
@@ -286,7 +282,7 @@ tox21_desc_train_T = np.array(tox21_desc_train.values, dtype = np.float64)
 tox21_desc_test_T = np.array(tox21_desc_test.values, dtype=np.float64)
 ```
 
-## 2.5. Standardization of Data 
+### 2.5. Standardization of Data 
 
 The data has been scalled using  Scikit learn ***StandarScalar*** function to standardize features by removing the mean and scaling to unit variance
 
@@ -295,6 +291,7 @@ $  z = (x - u) / s
 where u is the mean of the training samples or zero if with_mean=False, and s is the standard deviation of the training samples or one if with_std=False.
 
 see: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+
 ```python
 #standardization: scaling the data 
 
@@ -312,15 +309,16 @@ tox21_desc_test_S = scaler.transform(tox21_desc_test_T)
 columns=tox21_descriptors_df.columns)'''
 ```
 
-## 2.6. Spliting the data 
+### 2.6. Spliting the data 
 we have two spliting strategy :
- ### 1 - the default spliting  
+ #### 1 - the default spliting  
 as we mention before, the organizers have prepared the data for the participants to evaluate them.
- ### 2 - Random Split 
+ #### 2 - Random Split 
  
 The data splited randomly into two sets : training set and test set , using scikit learn ***train_test_split*** module , we give the training set 75% of the data set and the test set about 25%.
 
 see: https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
+
 ```python
 # changing the variable 
 x_train = tox21_desc_train_S
@@ -357,9 +355,9 @@ print('y_test.shape =' , y_test.shape)
 # 3.Building the Deep Neural Network model 
 
 ```
-## 3.1. Model Configuration  parameters and Hyperarameters configuration
+### 3.1. Model Configuration  parameters and Hyperarameters configuration
 
-### 3.1.1. Network Architecture:
+#### 3.1.1. Network Architecture:
     - the 1st hidden layers 
      - Number of neurons = 500
      - Activation function : relu 
@@ -369,7 +367,7 @@ print('y_test.shape =' , y_test.shape)
     - the 3rd : Output layer 
       - Activation : Softmax  , SIGMOID
       - Number of neurons = 12 (12 classes) multiclassifaction problem
-### 3.1.2. The optimizer and loss function: 
+#### 3.1.2. The optimizer and loss function: 
     - adam optimizer
     - batch size = 128 , 64
     - lr=0.001 
@@ -377,14 +375,14 @@ print('y_test.shape =' , y_test.shape)
     - beta_2=0.999
     - #epochs = 100 , 200
 
-### 3.1.3. Loss function
+#### 3.1.3. Loss function
     -  binary cross-entropy ( rather than categorical cross-entropy.)
     This may seem counterintuitive for multi-label classification; however, the goal is to treat each output label as an independent Bernoulli distribution and we want to penalize each output node independently.
     
-### 3.1.4. The metrics used to evaluate the results     
+#### 3.1.4. The metrics used to evaluate the results     
     - ROC_AUC
     - binary accuracy 
-### 3.1.5.Regularization 
+#### 3.1.5.Regularization 
     - Regularization techniques used to minimise the high variance (reduce overfiting): 
      - L2 regularization with 0.0001
      - dropout (inverted dropout)
@@ -444,7 +442,7 @@ print(y_pred_v.shape)
 print(y_val.shape)
 ```
 
-###ROC - AUC metric 
+### ROC - AUC metric 
 
 Reference of code : https://www.dlology.com/blog/simple-guide-on-how-to-generate-roc-plot-for-keras-classifier/
 
@@ -480,7 +478,7 @@ plt.savefig("AUC.pdf")
 plt.savefig("AUC.png")
 ```
 
-## Training and validation Loss curves
+### Training and validation Loss curves
 ```python
 plt.xlabel('epochs')
 plt.ylabel('Loss')
@@ -494,7 +492,7 @@ plt.savefig("Loss.pdf")
 plt.savefig("Loss.png")
 ```
 
-## Accuracy Curve 
+### Accuracy Curve 
 ```python
 plt.xlabel('epochs')
 plt.ylabel('binary_accuracy')
@@ -511,7 +509,7 @@ plt.savefig("accuracy.png")
 fit_log.history.keys()
 ```
 
-# Save  the model and results in google drive 
+### Save  the model and results in google drive 
 ```python
 from keras.models import load_model
 from datetime import datetime
@@ -534,7 +532,7 @@ model.save('Model '+today+'.h5')
 ```
 
 
-##Create forlder and subforlders to save models in Google drive 
+### Create forlder and subforlders to save models in Google drive 
 ```python
 from colab_util import *
 drive_handler = GoogleDriveHandler()
@@ -561,7 +559,7 @@ for i in up :
   drive_handler.upload(i , parent_path='Tox21 Models and Results/Models/Model '
 +today)
 ```
-#References
+## References
 ```python
 1 - https://github.com/jupyter/nbconvert/issues/314
 2 - https://github.com/jupyter/nbconvert/issues/524
